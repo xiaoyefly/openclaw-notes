@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 进阶教程</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .section h3 {
+            color: #555;
+            margin: 20px 0 10px 0;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+        }
+        
+        .section ul, .section ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .section li {
+            margin-bottom: 8px;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .tip {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .toc h3 {
+            margin-top: 0;
+        }
+        
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 5px;
+        }
+        
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🦞 OpenClaw 进阶教程</h1>
+            <p>从入门到精通，掌握自托管 AI Agent 网关</p>
+        </header>
+
+        <div class="toc">
+            <h3>📑 目录</h3>
+            <ul>
+                <li><a href="#intro">OpenClaw 简介</a></li>
+                <li><a href="#install">安装与配置</a></li>
+                <li><a href="#multi-agent">多 Agent 路由</a></li>
+                <li><a href="#nodes">移动端节点</a></li>
+                <li><a href="#skills">Skills 系统</a></li>
+                <li><a href="#control-ui">Control UI 使用</a></li>
+                <li><a href="#cron">定时任务</a></li>
+                <li><a href="#sandbox">沙盒与安全</a></li>
+                <li><a href="#faq">常见问题</a></li>
+            </ul>
+        </div>
+
+        <div class="section" id="intro">
+            <h2>🔥 OpenClaw 简介</h2>
+            <p>OpenClaw 是一个<strong>自托管的 AI Agent 网关</strong>，让你可以在自己的机器上运行 AI 助手，并通过多种聊天应用（WhatsApp、Telegram、Discord、iMessage 等）与之交互。</p>
+            
+            <h3>为什么选择 OpenClaw？</h3>
+            <ul>
+                <li><strong>完全自托管</strong> — 数据在自己机器上，不用依赖第三方云服务</li>
+                <li><strong>多平台统一</strong> — 一个 Gateway 同时服务多个聊天应用</li>
+                <li><strong>多 Agent 隔离</strong> — 工作/生活场景完全分离</li>
+                <li><strong>移动端扩展</strong> — iOS/Android 节点可调用相机、屏幕、位置等硬件</li>
+                <li><strong>开放生态</strong> — Skills 系统可扩展，有丰富的插件市场</li>
+            </ul>
+
+            <div class="highlight">
+                <strong>核心架构：</strong>Gateway 作为中心枢纽，连接各种聊天渠道和 AI Agent，同时支持移动端节点扩展能力。
+            </div>
+        </div>
+
+        <div class="section" id="install">
+            <h2>📦 安装与配置</h2>
+            
+            <h3>快速安装</h3>
+            <pre><code># 安装 OpenClaw
+npm install -g openclaw@latest
+
+# 运行配置向导
+openclaw onboard --install-daemon
+
+# 登录 WhatsApp（或其他渠道）
+openclaw channels login
+
+# 启动 Gateway
+openclaw gateway --port 18789</code></pre>
+
+            <h3>配置文件位置</h3>
+            <table>
+                <tr>
+                    <th>文件</th>
+                    <th>路径</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>主配置</td>
+                    <td><code>~/.openclaw/openclaw.json</code></td>
+                    <td>Gateway 核心配置</td>
+                </tr>
+                <tr>
+                    <td>工作区</td>
+                    <td><code>~/.openclaw/workspace</code></td>
+                    <td>Agent 文件和记忆</td>
+                </tr>
+                <tr>
+                    <td>Sessions</td>
+                    <td><code>~/.openclaw/agents/&lt;agentId&gt;/sessions</code></td>
+                    <td>会话历史</td>
+                </tr>
+                <tr>
+                    <td>Skills</td>
+                    <td><code>~/.openclaw/skills</code></td>
+                    <td>共享技能</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section" id="multi-agent">
+            <h2>🧠 多 Agent 路由</h2>
+            <p>多 Agent 是 OpenClaw 最强大的功能之一。每个 Agent 有独立的工作区、配置和会话。</p>
+
+            <h3>配置示例</h3>
+            <pre><code>{
+  "agents": {
+    "list": [
+      {
+        "id": "chat",
+        "name": "日常聊天",
+        "workspace": "~/.openclaw/workspace-chat",
+        "model": "anthropic/claude-sonnet-4-5"
+      },
+      {
+        "id": "opus",
+        "name": "深度工作",
+        "workspace": "~/.openclaw/workspace-opus",
+        "model": "anthropic/claude-opus-4-6"
+      }
+    ]
+  },
+  "bindings": [
+    { "agentId": "chat", "match": { "channel": "whatsapp" } },
+    { "agentId": "opus", "match": { "channel": "telegram" } }
+  ]
+}</code></pre>
+
+            <h3>路由优先级（从高到低）</h3>
+            <ol>
+                <li>特定用户/群组 (<code>peer</code>)</li>
+                <li>父级会话继承 (<code>parentPeer</code>)</li>
+                <li>Discord 角色/服务器</li>
+                <li>账号级别 (<code>accountId</code>)</li>
+                <li>频道级别</li>
+                <li>默认 Agent</li>
+            </ol>
+
+            <div class="tip">
+                <strong>提示：</strong>使用 <code>openclaw agents add &lt;name&gt;</code> 快速创建新 Agent，使用 <code>openclaw agents list --bindings</code> 查看路由配置。
+            </div>
+        </div>
+
+        <div class="section" id="nodes">
+            <h2>📱 移动端节点</h2>
+            <p>将 iPhone/Android 设备配对到 Gateway，让 AI 获得移动端的硬件能力。</p>
+
+            <h3>常用命令</h3>
+            <pre><code># 查看节点状态
+openclaw nodes status
+
+# 拍照（前后摄像头）
+openclaw nodes camera snap --node my-iphone --facing front
+
+# 录屏
+openclaw nodes screen record --node my-iphone --duration 10s
+
+# 获取位置
+openclaw nodes location get --node my-iphone --accuracy precise
+
+# 在手机上展示网页
+openclaw nodes canvas present --node my-iphone --target https://example.com</code></pre>
+
+            <h3>配对流程</h3>
+            <ol>
+                <li>在手机上安装 OpenClaw App</li>
+                <li>连接到 Gateway WebSocket</li>
+                <li>在 Gateway 上批准配对：<code>openclaw devices approve &lt;requestId&gt;</code></li>
+                <li>开始使用节点功能</li>
+            </ol>
+
+            <div class="warning">
+                <strong>注意：</strong>节点 App 需要保持在前台才能使用 <code>canvas.*</code> 和 <code>camera.*</code> 功能。
+            </div>
+        </div>
+
+        <div class="section" id="skills">
+            <h2>🛠️ Skills 系统</h2>
+            <p>Skills 是 OpenClaw 的扩展机制，类似插件。可以从 <a href="https://clawhub.com">ClawHub</a> 安装或自己开发。</p>
+
+            <h3>安装 Skill</h3>
+            <pre><code># 从 ClawHub 安装
+clawhub install gh-issues
+clawhub install weather
+clawhub install video-frames
+
+# 更新所有 Skills
+clawhub update --all</code></pre>
+
+            <h3>Skill 优先级</h3>
+            <ol>
+                <li>Workspace skills (<code>&lt;workspace&gt;/skills</code>) — 最高</li>
+                <li>本地 skills (<code>~/.openclaw/skills</code>)</li>
+                <li>内置 bundled skills — 最低</li>
+            </ol>
+
+            <h3>配置 Skill</h3>
+            <pre><code>{
+  "skills": {
+    "entries": {
+      "nano-banana-pro": {
+        "enabled": true,
+        "apiKey": { "source": "env", "provider": "default", "id": "GEMINI_API_KEY" },
+        "env": {
+          "GEMINI_API_KEY": "your-key-here"
+        }
+      }
+    }
+  }
+}</code></pre>
+        </div>
+
+        <div class="section" id="control-ui">
+            <h2>🖥️ Control UI 使用</h2>
+            <p>Control UI 是 OpenClaw 的浏览器控制台，提供图形化界面管理 Gateway。</p>
+
+            <h3>访问方式</h3>
+            <ul>
+                <li>本地：<code>http://127.0.0.1:18789/</code></li>
+                <li>Tailscale：<code>https://&lt;magic-dns&gt;/</code></li>
+            </ul>
+
+            <h3>主要功能</h3>
+            <ul>
+                <li>实时聊天 + 查看工具调用</li>
+                <li>管理多个 Channel（WhatsApp/Telegram/Discord 等）</li>
+                <li>查看和管理 Sessions</li>
+                <li>配置 Cron 定时任务</li>
+                <li>管理 Skills</li>
+                <li>查看日志和调试信息</li>
+            </ul>
+
+            <div class="tip">
+                <strong>远程访问建议：</strong>使用 <code>openclaw gateway --tailscale serve</code> 通过 Tailscale 安全访问 Control UI。
+            </div>
+        </div>
+
+        <div class="section" id="cron">
+            <h2>⏰ 定时任务</h2>
+            <p>配置 Cron 任务让 Agent 定时执行操作。</p>
+
+            <h3>配置示例</h3>
+            <pre><code>{
+  "cron": {
+    "jobs": [
+      {
+        "name": "每日天气",
+        "schedule": "0 8 * * *",
+        "prompt": "查一下今天的天气并告诉我",
+        "target": "telegram",
+        "channel": "telegram"
+      }
+    ]
+  }
+}</code></pre>
+
+            <h3>常用 Cron 表达式</h3>
+            <table>
+                <tr>
+                    <th>表达式</th>
+                    <th>含义</th>
+                </tr>
+                <tr>
+                    <td><code>0 8 * * *</code></td>
+                    <td>每天早上 8 点</td>
+                </tr>
+                <tr>
+                    <td><code>0 */6 * * *</code></td>
+                    <td>每 6 小时</td>
+                </tr>
+                <tr>
+                    <td><code>0 0 * * 1</code></td>
+                    <td>每周一凌晨</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section" id="sandbox">
+            <h2>🔒 沙盒与安全</h2>
+            <p>为不同 Agent 设置不同的安全级别，隔离风险。</p>
+
+            <h3>配置示例</h3>
+            <pre><code>{
+  "agents": {
+    "list": [
+      {
+        "id": "personal",
+        "sandbox": { "mode": "off" }
+      },
+      {
+        "id": "family",
+        "sandbox": {
+          "mode": "all",
+          "scope": "agent"
+        },
+        "tools": {
+          "allow": ["read", "exec"],
+          "deny": ["write", "edit", "browser"]
+        }
+      }
+    ]
+  }
+}</code></pre>
+
+            <h3>沙盒模式</h3>
+            <ul>
+                <li><code>off</code> — 无沙盒，完全信任</li>
+                <li><code>all</code> — 始终沙盒</li>
+                <li><code>ask</code> — 询问用户</li>
+            </ul>
+        </div>
+
+        <div class="section" id="faq">
+            <h2>❓ 常见问题</h2>
+            
+            <h3>如何查看所有 Session？</h3>
+            <pre><code>openclaw sessions list
+openclaw sessions history &lt;session-key&gt;</code></pre>
+
+            <h3>如何向其他 Session 发送消息？</h3>
+            <pre><code>openclaw sessions send --session &lt;key&gt; "消息内容"</code></pre>
+
+            <h3>如何生成子 Agent 处理任务？</h3>
+            <p>在对话中输入：<code>/spawn 任务描述</code></p>
+
+            <h3>如何重启 Gateway？</h3>
+            <pre><code>openclaw gateway restart</code></pre>
+
+            <h3>如何查看日志？</h3>
+            <pre><code>openclaw logs tail</code></pre>
+        </div>
+
+        <footer>
+            <p>OpenClaw 进阶教程 | 最后更新：2026-03-05</p>
+            <p>官方文档：<a href="https://docs.openclaw.ai">docs.openclaw.ai</a> | Skills 市场：<a href="https://clawhub.com">clawhub.com</a></p>
+        </footer>
+    </div>
+</body>
+</html>
